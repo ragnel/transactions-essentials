@@ -59,14 +59,15 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
+				<!-- plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>2.9</version>
 					<configuration>
 						<failOnError>false</failOnError>
+						<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 					</configuration>
-				</plugin>
+				</plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
@@ -159,12 +160,12 @@
 					<workingDirectory>${project.build.testOutputDirectory}</workingDirectory>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<subpackages>com.atomikos</subpackages>
 				</configuration>
-			</plugin>
+			</plugin -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -175,7 +176,7 @@
 					<preparationGoals>clean package javadoc:aggregate-jar install</preparationGoals>
 					<goals>deploy</goals>
 					<arguments>-DskipTests -Passemble</arguments>
-					<tag>${releaseVersion}</tag>
+					<tag>4.0.6</tag>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -253,7 +254,7 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
+					<!-- plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<version>2.7</version>
@@ -265,7 +266,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin -->
 				</plugins>
 
 			</build>
@@ -292,6 +293,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
