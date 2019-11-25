@@ -275,7 +275,7 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 
 	public synchronized void init() throws AtomikosSQLException 
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logInfo ( this + ": init..." );
+		LOGGER.logDebug ( this + ": init..." );
 		if (connectionPool != null)
 			return;
 		if ( maxPoolSize < 1 )
@@ -309,12 +309,12 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 			String msg =  "Cannot initialize AtomikosDataSourceBean";
 			AtomikosSQLException.throwAtomikosSQLException ( msg , ex );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": init done." );
+		LOGGER.logTrace ( this + ": init done." );
 	}
 	
 	public void close() 
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logInfo ( this + ": close..." );
+		LOGGER.logDebug ( this + ": close..." );
 		if (connectionPool != null) {
 			connectionPool.destroy();
 		}
@@ -324,9 +324,9 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 			IntraVmObjectRegistry.removeResource ( getUniqueResourceName() );
 		} catch ( NameNotFoundException e ) {
 			//ignore but log
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": Error removing from JNDI" , e );
+			LOGGER.logTrace ( this + ": Error removing from JNDI" , e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": close done." );
+		LOGGER.logTrace ( this + ": close done." );
 	}
 	
 	protected abstract ConnectionFactory doInit() throws Exception;
@@ -337,7 +337,7 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 
 	public Connection getConnection() throws SQLException 
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getConnection()..." );
+		LOGGER.logDebug ( this + ": getConnection()..." );
 		Connection connection = null;
 		
 		init();
@@ -348,11 +348,11 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 		} catch (CreateConnectionException ex) {
 			throwAtomikosSQLException("Failed to grow the connection pool", ex);
 		} catch (PoolExhaustedException e) {
-			throwAtomikosSQLException ("Connection pool exhausted - try increasing 'maxPoolSize' and/or 'borrowConnectionTimeout' on the DataSourceBean.");
+			throwAtomikosSQLException ("Connection pool exhausted - try increasing 'maxPoolSize' and/or 'borrowConnectionTimeout' on the DataSourceBean.", e);
 		} catch (ConnectionPoolException e) {
 			throwAtomikosSQLException("Error borrowing connection", e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": returning " + connection );
+		LOGGER.logTrace ( this + ": returning " + connection );
 		return connection;
 	}
 
@@ -442,7 +442,7 @@ implements DataSource, ConnectionPoolProperties, Referenceable, Serializable
 	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		throw new SQLFeatureNotSupportedException();
 	}
-
+	
 	/**
 	 * Refreshes all available connections in the pool.
 	 */

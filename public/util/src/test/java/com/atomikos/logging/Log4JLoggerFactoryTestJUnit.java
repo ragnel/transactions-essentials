@@ -115,7 +115,12 @@ public class Log4JLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 		getUnderlyingLogger().setLevel(Level.DEBUG);
 
 	}
-
+	
+	@Override
+	protected void configureLoggingFrameworkWithWarning() {
+		getUnderlyingLogger().setLevel(Level.WARN);
+	}
+	
 	private org.apache.log4j.Logger getUnderlyingLogger() {
 		return org.apache.log4j.Logger.getLogger(getClass());
 	}

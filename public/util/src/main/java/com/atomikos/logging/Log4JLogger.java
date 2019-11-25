@@ -19,42 +19,53 @@ class Log4JLogger implements Logger {
 	}
 
 	public void logWarning(String message) {
-		log4jLogger.warn(message);
+		if (isWarningEnabled()) {
+			log4jLogger.warn(message);
+		}
 	}
 
 	@Override
 	public void logInfo(String message) {
-		log4jLogger.info(message);
+		if (isInfoEnabled()) {
+			log4jLogger.info(message);
+		}
 	}
 
 	public void logDebug(String message) {
-		log4jLogger.debug(message);
+		if (isDebugEnabled()) {
+			log4jLogger.debug(message);
+		}
 	}
 
 	public void logTrace(String message) {
-		log4jLogger.trace(message);
+		if (isTraceEnabled()) {
+			log4jLogger.trace(message);
+		}
 	}
 
 	public void logWarning(String message, Throwable error) {
-		log4jLogger.warn(message, error);
-
+		if (isWarningEnabled()) {
+			log4jLogger.warn(message, error);
+		}
 	}
 
 	public void logDebug(String message, Throwable error) {
-		log4jLogger.debug(message, error);
+		if (isDebugEnabled()) {
+			log4jLogger.debug(message, error);
+		}
 	}
 
 	public void logTrace(String message, Throwable error) {
-		log4jLogger.trace(message, error);
+		if (isTraceEnabled()) {
+			log4jLogger.trace(message, error);
+		}
 	}
 
 	public boolean isTraceEnabled() {
-
 		return log4jLogger.isTraceEnabled();
 	}
 
 	public boolean isDebugEnabled() {
-
 		return log4jLogger.isDebugEnabled();
 	}
 
@@ -63,7 +74,9 @@ class Log4JLogger implements Logger {
 	}
 
 	public void logError(String message, Throwable error) {
-		log4jLogger.error(message, error);
+		if (isErrorEnabled()) {
+			log4jLogger.error(message, error);
+		}
 	}
 
 	public boolean isErrorEnabled() {
@@ -72,15 +85,21 @@ class Log4JLogger implements Logger {
 
 	@Override
 	public void logInfo(String message, Throwable error) {
-		log4jLogger.info(message, error);
-
+		if (isInfoEnabled()) {
+			log4jLogger.info(message, error);
+		}
 	}
 
 	@Override
 	public boolean isInfoEnabled() {
 		return log4jLogger.isInfoEnabled();
 	}
-
+	
+	@Override
+	public boolean isWarningEnabled() {
+		return log4jLogger.isEnabledFor(Level.WARN);
+	}
+	
 	@Override
 	public void logFatal(String message) {
 		log4jLogger.fatal(message);

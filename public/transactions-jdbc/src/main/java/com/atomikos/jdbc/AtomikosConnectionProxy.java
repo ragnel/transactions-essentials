@@ -76,17 +76,15 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 		if ( methodName.equals ( "getInvocationHandler" ) ) return this;
 
 		if (methodName.equals("reap")) {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": reaping pending connection..." );
-
-			//LOGGER.logDebug("{} : reaping pending connection..", this);
+			LOGGER.logDebug ( this + ": reaping pending connection..." );
 			reap();
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": reap done!" );
+			LOGGER.logTrace ( this + ": reap done!" );
 			return null;
 		}
 		if (methodName.equals("isClosed")) {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": isClosed()..." );
+			LOGGER.logDebug ( this + ": isClosed()..." );
 			Object ret = Boolean.valueOf(closed);
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": isClosed() returning " + ret );
+			LOGGER.logTrace ( this + ": isClosed() returning " + ret );
 			return ret;
 		}
 
@@ -137,7 +135,7 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
  		}
 		else {
 			try {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + formatCallDetails(method,args) + "...");
+				LOGGER.logDebug ( this + ": calling " + formatCallDetails(method,args) + "...");
 				ret = method.invoke(delegate, args);
 
 			} catch (Exception ex) {
@@ -145,7 +143,7 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 				JdbcConnectionProxyHelper.convertProxyError ( ex , "Error delegating '" + methodName + "' call" );
 			}
 		}
-        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
+        LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
         if ( ret instanceof Statement ) {
         	//keep statement for closing upon timeout/close
         	//see bug 29708
@@ -198,7 +196,7 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 	private boolean enlist() throws AtomikosSQLException {
 		boolean ret = false;
 		try {
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace( this + ": notifyBeforeUse " + sessionHandleState);
+			LOGGER.logTrace( this + ": notifyBeforeUse " + sessionHandleState);
 			CompositeTransaction ct = null;
 			CompositeTransactionManager ctm = getCompositeTransactionManager();
 			if ( ctm != null ) {
@@ -207,7 +205,7 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 				sessionHandleState.notifyBeforeUse ( ct );
 				if (ct != null && ct.getProperty ( TransactionManagerImp.JTA_PROPERTY_NAME ) != null ) {
 					ret = true;
-					if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": detected transaction " + ct );
+					LOGGER.logTrace ( this + ": detected transaction " + ct );
 					if ( ct.getState().equals(TxState.ACTIVE) ) ct.registerSynchronization(new JdbcRequeueSynchronization( this , ct ));
 					else AtomikosSQLException.throwAtomikosSQLException("The transaction has timed out - try increasing the timeout if needed");
 				}
@@ -220,11 +218,11 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 	}
 
 	private void close() {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": close()...");
+		LOGGER.logDebug ( this + ": close()...");
 		forceCloseAllPendingStatements ( false );
 		closed = true;
 		sessionHandleState.notifySessionClosed();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": closed." );
+		LOGGER.logTrace ( this + ": closed." );
 	}
 
 	private boolean isEnlistedInGlobalTransaction()
@@ -285,7 +283,7 @@ class AtomikosConnectionProxy extends AbstractConnectionProxy
 			if ( state.equals ( TxState.TERMINATED ) || state.isHeuristic()) {
 
 	            // connection is reusable!
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace(  proxy + ": detected termination of transaction " + compositeTransaction );
+				LOGGER.logTrace(  proxy + ": detected termination of transaction " + compositeTransaction );
 				sessionHandleState.notifyTransactionTerminated(compositeTransaction);
 
 	            afterCompletionDone = true;

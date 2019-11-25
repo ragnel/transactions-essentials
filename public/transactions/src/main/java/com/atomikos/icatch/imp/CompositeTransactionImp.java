@@ -136,17 +136,15 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
 
 
     /**
-     * @see TransactionControl.
+     * @see CompositeTransaction
      */
 
     public CompositeTransaction createSubTransaction () throws SysException,
             IllegalStateException
     {
         CompositeTransaction ret = localGetTransactionStateHandler().createSubTransaction ();
-        if(LOGGER.isDebugEnabled()){
-        	LOGGER.logDebug("createSubTransaction(): created new SUBTRANSACTION "
+        LOGGER.logDebug("createSubTransaction(): created new SUBTRANSACTION "
                     + ret.getTid () + " for existing transaction " + getTid ());
-        }
 
         return ret;
     }
@@ -160,10 +158,9 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     {
 
         RecoveryCoordinator ret = localGetTransactionStateHandler().addParticipant ( participant );
-        if(LOGGER.isDebugEnabled()){
-        	LOGGER.logDebug("addParticipant ( " + participant + " ) for transaction "
+        LOGGER.logDebug("addParticipant ( " + participant + " ) for transaction "
                     + getTid ());
-        }
+        
         return ret;
     }
 
@@ -175,10 +172,8 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
             IllegalStateException, UnsupportedOperationException, SysException
     {
     	localGetTransactionStateHandler().registerSynchronization ( sync );
-    	if(LOGGER.isDebugEnabled()){
-    		LOGGER.logDebug("registerSynchronization ( " + sync + " ) for transaction "
+    	LOGGER.logDebug("registerSynchronization ( " + sync + " ) for transaction "
                     + getTid ());
-    	}
     }
 
     /**
@@ -192,21 +187,18 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     }
 
     /**
-     * @see TransactionControl.
+     * @see CompositeTransaction
      */
 
     protected void doRollback () throws java.lang.IllegalStateException,
             SysException
     {
     	localGetTransactionStateHandler().rollbackWithStateCheck ();
-    	if(LOGGER.isDebugEnabled()){
     		LOGGER.logDebug("rollback() done of transaction " + getTid ());
-    	}
-
     }
 
     /**
-     * @see CompositeTransaction.
+     * @see CompositeTransaction
      */
 
     public CompositeCoordinator getCompositeCoordinator () throws SysException
@@ -215,7 +207,7 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     }
 
     /**
-     * @see CompositeTransaction.
+     * @see CompositeTransaction
      */
 
     public boolean isLocal ()
@@ -240,9 +232,7 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     {
 
     	localGetTransactionStateHandler().commit ();
-    	if(LOGGER.isDebugEnabled()){
-    		LOGGER.logDebug("commit() done (by application) of transaction " + getTid ());
-    	}
+    	LOGGER.logDebug("commit() done (by application) of transaction " + getTid ());
     }
 
     public long getTimeout ()
@@ -260,11 +250,7 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     public void setRollbackOnly ()
     {
     	localGetTransactionStateHandler().setRollbackOnly ();
-    	if(LOGGER.isDebugEnabled()){
-    		LOGGER.logDebug("setRollbackOnly() called for transaction " + getTid ());
-    	}
-
-
+    	LOGGER.logDebug("setRollbackOnly() called for transaction " + getTid ());
     }
 
     /**
@@ -322,7 +308,7 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     }
 
     /**
-     * @see com.atomikos.finitestates.Stateful.
+     * @see com.atomikos.finitestates.Stateful
      */
 
     public TxState getState ()
@@ -331,7 +317,7 @@ class CompositeTransactionImp extends AbstractCompositeTransaction implements FS
     }
 
     /**
-     * @see com.atomikos.finitestates.FSMEnterListener#preEnter(com.atomikos.finitestates.FSMEnterEvent)
+     * @see com.atomikos.finitestates.FSMEnterListener#entered(com.atomikos.finitestates.FSMEnterEvent)
      */
     public void entered ( FSMEnterEvent coordinatorTerminatedEvent )
     {

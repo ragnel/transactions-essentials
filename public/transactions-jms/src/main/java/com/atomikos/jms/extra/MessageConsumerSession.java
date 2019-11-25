@@ -261,7 +261,7 @@ class MessageConsumerSession
 	    msg.append ( "exceptionListener=" ).append ( getExceptionListener() ).append ( ", " );
 	    msg.append ( "connectionFactory=" ).append ( getAtomikosConnectionFactoryBean() );
 	    msg.append ( "]" );
-	    if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( msg.toString() );
+	    LOGGER.logTrace ( msg.toString() );
 
 	}
 
@@ -280,14 +280,14 @@ class MessageConsumerSession
 				try {
 					ret = q.getQueueName();
 				} catch (JMSException e) {
-					if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Error retrieving queue name" , e );
+					LOGGER.logTrace ( "Error retrieving queue name" , e );
 				}
 			} else if ( destination instanceof Topic ) {
 				Topic t = ( Topic ) destination;
 				try {
 					ret = t.getTopicName();
 				} catch (JMSException e) {
-					if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Error retrieving topic name" , e );
+					LOGGER.logTrace ( "Error retrieving topic name" , e );
 				}
 			}
 		}
@@ -311,7 +311,7 @@ class MessageConsumerSession
 	        //FIXED 10082
 	        current.setDaemon ( daemonThreads );
 	        current.start ();
-	        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: started new thread: " + current );
+	        LOGGER.logTrace ( "MessageConsumerSession: started new thread: " + current );
 		    }
 		    //if not active: ignore
 	}
@@ -430,9 +430,9 @@ class MessageConsumerSession
 								if ( Thread.currentThread() != this ) {
 
 									//see case 62452 and 80464: wait for listener thread to exit so the subscriber is no longer in use
-									if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "MessageConsumerSession: waiting for listener thread to finish..." );
+									LOGGER.logDebug ( "MessageConsumerSession: waiting for listener thread to finish..." );
 									this.join();
-									if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: waiting done." );
+									LOGGER.logTrace ( "MessageConsumerSession: waiting done." );
 
 								}
 
@@ -442,30 +442,27 @@ class MessageConsumerSession
 								}
 
 							} catch ( JMSException e ) {
-
-								 if ( LOGGER.isDebugEnabled() ) {
-									 LOGGER.logDebug ("MessageConsumerSession: Error closing on JMS session", e );
-									 LOGGER.logDebug ( "MessageConsumerSession: linked exception is " , e.getLinkedException() );
-								 }
+								LOGGER.logDebug ("MessageConsumerSession: Error closing on JMS session", e );
+								LOGGER.logDebug ( "MessageConsumerSession: linked exception is " , e.getLinkedException() );
 							}
 						}
 
 					    try {
-					    	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "MessageConsumerSession: closing JMS session..." );
+					    	LOGGER.logDebug ( "MessageConsumerSession: closing JMS session..." );
 					        session.close ();
 					        session = null;
-					        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: JMS session closed." );
+					        LOGGER.logTrace ( "MessageConsumerSession: JMS session closed." );
 					    } catch ( JMSException e ) {
-					        if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "MessageConsumerSession: Error closing JMS session", e );
-					        if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "MessageConsumerSession: linked exception is " , e.getLinkedException() );
+					        LOGGER.logDebug ( "MessageConsumerSession: Error closing JMS session", e );
+					        LOGGER.logDebug ( "MessageConsumerSession: linked exception is " , e.getLinkedException() );
 					    }
 					}
 					if ( connection != null )
 					    try {
-					    	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "MessageConsumerSession: closing JMS connection..." );
+					    	LOGGER.logDebug ( "MessageConsumerSession: closing JMS connection..." );
 					        connection.close ();
 					        connection = null;
-					        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: JMS connection closed." );
+					        LOGGER.logTrace ( "MessageConsumerSession: JMS connection closed." );
 					    } catch ( JMSException e ) {
 					    	LOGGER.logWarning ( "MessageConsumerSession: Error closing JMS connection", e );
 					        LOGGER.logWarning ( "MessageConsumerSession: linked exception is " , e.getLinkedException() );
@@ -493,7 +490,7 @@ class MessageConsumerSession
 
 	            while ( Thread.currentThread () == current ) {
 
-	            	   if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: JMS listener thread iterating..." );
+	            	LOGGER.logTrace ( "MessageConsumerSession: JMS listener thread iterating..." );
 	                boolean refresh = false;
 	                boolean commit = true;
 	                try {
@@ -537,10 +534,8 @@ class MessageConsumerSession
 	                            commit = false;
 	                        }
 	                    } catch ( Exception e ) {
-	                        if ( LOGGER.isDebugEnabled() ) {
-	                        	LOGGER.logDebug ("MessageConsumerSession: Error during JMS processing of message "
+	                    	LOGGER.logDebug ("MessageConsumerSession: Error during JMS processing of message "
 	                        					+ msg.toString () + " - rolling back.", e );
-	                        }
 
 	                        // This happens if the listener generated the error.
 	                        // In that case, don't refresh the connection but rather
@@ -620,7 +615,7 @@ class MessageConsumerSession
 	                    	try {
 	                    		receiver.close();
 	                    	} catch ( Throwable e ) {
-	                    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "MessageConsumerSession: Error closing receiver" , e );
+	                    		LOGGER.logTrace ( "MessageConsumerSession: Error closing receiver" , e );
 	                    	}
 	                        receiver = null;
 	                        closeJmsResources ( false );

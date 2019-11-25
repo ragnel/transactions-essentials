@@ -46,7 +46,7 @@ public class JdbcConnectionProxyHelper {
 					Throwable cause = ite.getCause();
 					if ( cause != null ) {
 						//log as debug and let the convert do the rest for the cause
-						if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( msg , ite );
+						LOGGER.logTrace ( msg , ite );
 						convertProxyError ( cause , msg );
 					}
 					else {
@@ -68,7 +68,7 @@ public class JdbcConnectionProxyHelper {
 			return;
 
 		try {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( "setting isolation level to " + defaultIsolationLevel);
+			LOGGER.logDebug ( "setting isolation level to " + defaultIsolationLevel);
 			connection.setTransactionIsolation ( defaultIsolationLevel );
 		}
 		catch (SQLException ex) {

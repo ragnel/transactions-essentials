@@ -105,7 +105,7 @@ public class Log4j2LoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	}
 
 	public void testIsInfoEnabled() {
-		getUnderlyingLogger().setLevel(Level.WARN);
+		getUnderlyingLogger().setLevel(Level.INFO);
 		super.testIsInfoEnabled();
 	}
 
@@ -118,9 +118,13 @@ public class Log4j2LoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	@Override
 	protected void configureLoggingFrameworkWithDebug() {
 		getUnderlyingLogger().setLevel(Level.DEBUG);
-
 	}
-
+	
+	@Override
+	protected void configureLoggingFrameworkWithWarning() {
+		getUnderlyingLogger().setLevel(Level.WARN);
+	}
+	
 	private org.apache.logging.log4j.core.Logger getUnderlyingLogger() {
 		return (org.apache.logging.log4j.core.Logger) LogManager
 				.getLogger(getClass());

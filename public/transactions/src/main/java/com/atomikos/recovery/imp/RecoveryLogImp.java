@@ -38,7 +38,7 @@ public class RecoveryLogImp implements RecoveryLog, AdminLog {
 
 	@Override
 	public void terminated(ParticipantLogEntry entry)  {
-		if (LOGGER.isTraceEnabled()) LOGGER.logTrace("terminated: " + entry);
+		LOGGER.logTrace("terminated: " + entry);
 
 		try {
 			CoordinatorLogEntry coordinatorLogEntry =null;
@@ -149,9 +149,9 @@ public class RecoveryLogImp implements RecoveryLog, AdminLog {
 				}
 				
 			}
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.logTrace("Attempting presumed abort for existing " + coordinatorLogEntry);
-			}
+
+			LOGGER.logTrace("Attempting presumed abort for existing " + coordinatorLogEntry);
+			
 			CoordinatorLogEntry updated = coordinatorLogEntry.presumedAborting(entry);			
 			write(updated);
 		
@@ -265,7 +265,7 @@ public class RecoveryLogImp implements RecoveryLog, AdminLog {
 				} catch (InterruptedException ex) {
 					InterruptedExceptionHelper.handleInterruptedException ( ex );
 					// ignore
-					if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": interrupted during wait" , ex );
+					LOGGER.logTrace ( this + ": interrupted during wait" , ex );
 				}
 			}
 			accumulatedWaitTime+=waitTime;

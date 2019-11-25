@@ -32,8 +32,7 @@ import com.atomikos.util.ClassLoadingHelper;
  * All SQL done over connections (gotten from this class) will participate in JTA transactions.
  */
 
-public class AtomikosDataSourceBean 
-extends AbstractDataSourceBean
+public class AtomikosDataSourceBean extends AbstractDataSourceBean
 {
 	private static final Logger LOGGER = LoggerFactory.createLogger(AtomikosDataSourceBean.class);
 	
@@ -140,7 +139,7 @@ extends AbstractDataSourceBean
 		}
 		
 		
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logInfo(
+		LOGGER.logDebug(
 				this + ": initializing with [" +
 				" xaDataSourceClassName=" + xaDataSourceClassName + "," +
 				" uniqueResourceName=" + getUniqueResourceName() + "," +

@@ -160,7 +160,7 @@ class TransactionImp implements Transaction {
 	}
 
 	/**
-	 * @see javax.transaction.Transaction.
+	 * @see javax.transaction.Transaction
 	 */
 
 	@Override
@@ -190,7 +190,7 @@ class TransactionImp implements Transaction {
 	}
 
 	/**
-	 * @see javax.transaction.Transaction.
+	 * @see javax.transaction.Transaction
 	 */
 
 	@Override
@@ -205,7 +205,7 @@ class TransactionImp implements Transaction {
 	}
 
 	/**
-	 * @see javax.transaction.Transaction.
+	 * @see javax.transaction.Transaction
 	 */
 
 	@Override
@@ -214,7 +214,7 @@ class TransactionImp implements Transaction {
 	}
 
 	/**
-	 * @see javax.transaction.Transaction.
+	 * @see javax.transaction.Transaction
 	 */
 
 	@Override
@@ -269,11 +269,9 @@ class TransactionImp implements Transaction {
 		} else {
 
 			res = findRecoverableResourceForXaResource(xares);
-
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("enlistResource ( " + xares
+			
+			LOGGER.logDebug("enlistResource ( " + xares
 						+ " ) with transaction " + toString());
-			}
 
 			if (res == null) {
 				String msg = "There is no registered resource that can recover the given XAResource instance. "
@@ -334,10 +332,9 @@ class TransactionImp implements Transaction {
 				// cf case 61740: check for concurrent additions before this
 				// synch block was entered
 				if (Configuration.getResource(ret.getName()) == null) {
-					if (LOGGER.isTraceEnabled()) {
-						LOGGER.logTrace("constructing new temporary resource "
+					LOGGER.logTrace("constructing new temporary resource "
 								+ "for unknown XAResource: " + xares);
-					}
+					
 					Configuration.addResource(ret);
 				} else {
 					//fix for case 116270
@@ -351,18 +348,16 @@ class TransactionImp implements Transaction {
 	}
 
 	/**
-	 * @see javax.transaction.Transaction.
+	 * @see javax.transaction.Transaction
 	 */
 
 	@Override
 	public boolean delistResource(XAResource xares, int flag)
 			throws java.lang.IllegalStateException,
 			javax.transaction.SystemException {
-
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.logDebug("delistResource ( " + xares + " ) with transaction "
+		
+		LOGGER.logDebug("delistResource ( " + xares + " ) with transaction "
 					+ toString());
-		}
 
 		XAResourceTransaction active = findXAResourceTransaction(xares);
 		// NOTE: the lookup MUST have succeeded since the delist must be

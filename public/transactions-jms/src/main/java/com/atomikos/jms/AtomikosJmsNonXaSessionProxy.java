@@ -75,7 +75,7 @@ class AtomikosJmsNonXaSessionProxy extends AbstractJmsSessionProxy
 			try {
 				tx = tm.getTransaction();
 			} catch (SystemException e) {
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": Failed to get transaction."  , e );
+				LOGGER.logTrace ( this + ": Failed to get transaction."  , e );
 				//ignore
 			}
 			if ( tx != null ) {
@@ -84,7 +84,7 @@ class AtomikosJmsNonXaSessionProxy extends AbstractJmsSessionProxy
 						"To enable JTA, make sure to do all of the following:" + "\n" +
 						"1. Make sure that the AtomikosConnectionFactoryBean is configured with localTransactionMode=false, and" + "\n" +
 						"2. Make sure to call create JMS sessions with the transacted flag set to true.";
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( msg );
+				LOGGER.logDebug ( msg );
 			}
 		}
 	}
@@ -109,7 +109,7 @@ class AtomikosJmsNonXaSessionProxy extends AbstractJmsSessionProxy
 			}
 
 			if ( CLOSE_METHOD.equals ( methodName ) ) {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": close...");
+				LOGGER.logDebug ( this + ": close...");
 				destroy();
 				return null;
 			}
@@ -117,9 +117,9 @@ class AtomikosJmsNonXaSessionProxy extends AbstractJmsSessionProxy
 			checkForTransactionContextAndLogWarningIfSo();
 
 			try {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + methodName + " on vendor session..." );
+				LOGGER.logDebug ( this + ": calling " + methodName + " on vendor session..." );
 				Object ret =  method.invoke(delegate, args);
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
+				LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
 				return ret;
 			} catch (Exception ex) {
 				errorsOccurred = true;
@@ -135,7 +135,7 @@ class AtomikosJmsNonXaSessionProxy extends AbstractJmsSessionProxy
 
 	protected void destroy() {
 		try {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": destroying session...");
+			LOGGER.logDebug ( this + ": destroying session...");
 			if ( !closed ) {
 				closed = true;
 				delegate.close(); 

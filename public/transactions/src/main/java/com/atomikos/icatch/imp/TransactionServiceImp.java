@@ -89,8 +89,6 @@ public class TransactionServiceImp implements TransactionServiceProvider,
      *            The recovery manager to use.
      * @param tidmgr
      *            The String manager to use.
-     * @param console
-     *            The console to use. Null if none.
      * @param maxtimeout
      *            The max timeout for new or imported txs.
      * @param maxActives
@@ -116,8 +114,6 @@ public class TransactionServiceImp implements TransactionServiceProvider,
      *            The recovery manager to use.
      * @param tidmgr
      *            The String manager to use.
-     * @param console
-     *            The console to use. Null if none.
      * @param maxtimeout
      *            The max timeout for new or imported txs.
      * @param checkorphans
@@ -129,7 +125,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
      *            configurations that do not support orphan detection.
      * @param single_threaded_2pc
      *            Whether 2PC commit should happen in the same thread that started the tx.
-     * @param recoveryLog2 
+     * @param recoveryLog
      *
      */
 
@@ -270,7 +266,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
             CoordinatorImp coordinator , Stack<CompositeTransaction> lineage , boolean serial )
             throws SysException
     {
-    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Creating composite transaction: " + tid );
+        LOGGER.logTrace ( "Creating composite transaction: " + tid );
         CompositeTransactionImp ct = new CompositeTransactionImp ( this,
                 lineage, tid, serial, coordinator );
 
@@ -281,11 +277,9 @@ public class TransactionServiceImp implements TransactionServiceProvider,
     /**
      * Creation method for composite coordinators.
      *
-     * @param RecoveryCoordinator
+     * @param adaptor
      *            An existing coordinator for the given root. Null if not a
      *            subtx, or an <b>adaptor</b> in other cases.
-     * @param lineage
-     *            The ancestor information.
      * @param root
      *            The root id.
      * @param checkOrphans
@@ -428,7 +422,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
 
     		if ( ! tsListeners_.contains ( listener ) ) {
     			tsListeners_.addElement ( listener );
-    			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace (  "Added TSListener: " + listener );
+    			LOGGER.logTrace (  "Added TSListener: " + listener );
     		}
 
 
@@ -442,7 +436,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
     {
 
         tsListeners_.removeElement ( listener );
-        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace  ( "Removed TSListener: " + listener );
+        LOGGER.logTrace  ( "Removed TSListener: " + listener );
 
     }
     
@@ -503,7 +497,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
     }
 
     /**
-     * @see FSMEnterListener.
+     * @see FSMEnterListener
      */
 
     public void entered ( FSMEnterEvent event )
@@ -703,7 +697,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
 
             	//PURGE to avoid issue 10079
             	//use a clone to avoid concurrency interference
-            	if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Transaction Service: Purging coordinators for shutdown..." );
+            	LOGGER.logTrace ( "Transaction Service: Purging coordinators for shutdown..." );
             	Hashtable<String,CoordinatorImp> clone = new Hashtable<String,CoordinatorImp>(rootToCoordinatorMap_);
             	Enumeration<String> coordinatorIds = clone.keys();
             	while ( coordinatorIds.hasMoreElements() ) {
@@ -751,7 +745,7 @@ public class TransactionServiceImp implements TransactionServiceProvider,
     }
 
     /**
-     * @see com.atomikos.icatch.TransactionService#getSuperiorRecoveryCoordinator(java.lang.String)
+     * @see com.atomikos.icatch.TransactionService#getCompositeTransaction(java.lang.String)
      */
     public RecoveryCoordinator getSuperiorRecoveryCoordinator ( String root )
     {

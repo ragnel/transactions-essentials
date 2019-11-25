@@ -107,14 +107,14 @@ class AtomikosJmsXaSessionProxy extends AbstractJmsSessionProxy implements Sessi
 				//
 				// See: org.springframework.jms.connection.ConnectionFactoryUtils$JmsResourceSynchronization.afterCommit()
 				// and org.springframework.jms.connection.JmsResourceHolder.commitAll() (as of Spring 2.0.8)
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": " + msg );
+				LOGGER.logDebug ( this + ": " + msg );
 				throw new javax.jms.TransactionInProgressException ( msg );
 			}
 			
 			
 			if ( CLOSE_METHOD.equals ( methodName ) ) {
 				state.notifySessionClosed();
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": closing session " + this + " - is terminated ? " + state.isTerminated() );
+				LOGGER.logDebug ( this + ": closing session " + this + " - is terminated ? " + state.isTerminated() );
 				if ( state.isTerminated() ) {
 					//only destroy if there is no pending 2PC - otherwise this is done
 					//in the registered synchronization
@@ -129,7 +129,7 @@ class AtomikosJmsXaSessionProxy extends AbstractJmsSessionProxy implements Sessi
 			}
 			
 			if (PRODUCER_CONSUMER_METHODS.contains(methodName)) {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver session " + delegate );
+				LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver session " + delegate );
 				Object producerConsumerProxy = null;
 				if ( "createConsumer".equals ( methodName ) ) {
 					MessageConsumer vendorConsumer = null;
@@ -164,15 +164,15 @@ class AtomikosJmsXaSessionProxy extends AbstractJmsSessionProxy implements Sessi
 					}
 					producerConsumerProxy = new AtomikosJmsTopicSubscriberProxy ( vendorSubscriber , state );
 				}
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + producerConsumerProxy );
+				LOGGER.logTrace ( this + ": " + methodName + " returning " + producerConsumerProxy );
 				return producerConsumerProxy;
 			
 			}
 			
 			try {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver session..." );
+				LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver session..." );
 				Object ret = method.invoke(delegate, args);
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
+				LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
 				return ret;
 			}  catch (Exception ex) {
 				String msg =  "Error delegating call to " + methodName + " on JMS driver";
@@ -191,7 +191,7 @@ class AtomikosJmsXaSessionProxy extends AbstractJmsSessionProxy implements Sessi
 	protected void destroy ( boolean closeXaSession ) {
 			if ( closeXaSession ) {
 				//see case 71079: don't close vendor session if transaction is not done yet
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": closing underlying vendor session " + this );
+				LOGGER.logTrace ( this + ": closing underlying vendor session " + this );
 				try {
 					delegate.close(); 
 				} catch  ( JMSException e ) {

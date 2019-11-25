@@ -28,9 +28,9 @@ public class Slf4jLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	protected void assertLoggedAsTrace() {
 		Mockito.verify(StaticLoggerBinder.mockito).trace(MESSAGE);
 	}
+	
 	protected void assertLoggedAsDebugWithException() {
 		Mockito.verify(StaticLoggerBinder.mockito).debug(MESSAGE,ERROR);
-			
 	}
 	@Override
 	protected void assertLoggedAsTraceWithException() {
@@ -43,7 +43,6 @@ public class Slf4jLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 
 	protected void assertLoggedAsInfoWithException() {
 		Mockito.verify(StaticLoggerBinder.mockito).info(MESSAGE,ERROR);
-		
 	}
 
 	protected void assertLoggedAsWarning() {
@@ -64,6 +63,9 @@ public class Slf4jLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	}
 	
 	@Override
+	protected void configureLoggingFrameworkWithWarning() { Mockito.when(StaticLoggerBinder.mockito.isWarnEnabled()).thenReturn(true); }
+	
+	@Override
 	protected void configureLoggingFrameworkWithTrace() {
 		Mockito.when(StaticLoggerBinder.mockito.isTraceEnabled()).thenReturn(true);
 	}
@@ -75,12 +77,12 @@ public class Slf4jLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 
   @Override
   protected void assertLoggedAsError() {
-    Mockito.verify(StaticLoggerBinder.mockito).error(MESSAGE);
+	  Mockito.verify(StaticLoggerBinder.mockito).error(MESSAGE);
   }
 
   @Override
   protected void assertLoggedAsErrorWithException() {
-    Mockito.verify(StaticLoggerBinder.mockito).error(MESSAGE,ERROR);
+	  Mockito.verify(StaticLoggerBinder.mockito).error(MESSAGE,ERROR);
   }
 
   @Override

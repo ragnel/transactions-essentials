@@ -16,38 +16,48 @@ class JULLogger implements Logger {
 
 	public JULLogger(Class<?> clazz) {
 		julLogger = java.util.logging.Logger.getLogger(clazz.getName());
-
 	}
 
 	public void logWarning(String message) {
-		julLogger.log(Level.WARNING, message);
+		if (isWarningEnabled()) {
+			julLogger.log(Level.WARNING, message);
+		}
 	}
 
 	public void logInfo(String message) {
-		julLogger.log(Level.INFO, message);
-
+		if (isInfoEnabled()) {
+			julLogger.log(Level.INFO, message);
+		}
 	}
 
 	public void logDebug(String message) {
-		julLogger.log(Level.FINE, message);
-
+		if (isDebugEnabled()) {
+			julLogger.log(Level.FINE, message);
+		}
 	}
 
 	public void logTrace(String message) {
-		julLogger.log(Level.FINEST, message);
+		if (isTraceEnabled()) {
+			julLogger.log(Level.FINEST, message);
+		}
 	}
 
 	public void logWarning(String message, Throwable error) {
-		julLogger.log(Level.WARNING, message, error);
+		if (isWarningEnabled()) {
+			julLogger.log(Level.WARNING, message, error);
+		}
 	}
 
 	public void logDebug(String message, Throwable error) {
-		julLogger.log(Level.FINE, message, error);
-
+		if (isDebugEnabled()) {
+			julLogger.log(Level.FINE, message, error);
+		}
 	}
 
 	public void logTrace(String message, Throwable error) {
-		julLogger.log(Level.FINEST, message, error);
+		if (isTraceEnabled()) {
+			julLogger.log(Level.FINEST, message, error);
+		}
 	}
 
 	public boolean isTraceEnabled() {
@@ -59,11 +69,15 @@ class JULLogger implements Logger {
 	}
 
 	public void logError(String message) {
-		julLogger.log(Level.SEVERE, message);
+		if (isErrorEnabled()) {
+			julLogger.log(Level.SEVERE, message);
+		}
 	}
 
 	public void logError(String message, Throwable error) {
-		julLogger.log(Level.SEVERE, message, error);
+		if (isErrorEnabled()) {
+			julLogger.log(Level.SEVERE, message, error);
+		}
 	}
 
 	public boolean isErrorEnabled() {
@@ -72,14 +86,21 @@ class JULLogger implements Logger {
 
 	@Override
 	public void logInfo(String message, Throwable error) {
-		julLogger.log(Level.INFO, message, error);
+		if (isInfoEnabled()) {
+			julLogger.log(Level.INFO, message, error);
+		}
 	}
 
 	@Override
 	public boolean isInfoEnabled() {
 		return julLogger.isLoggable(Level.INFO);
 	}
-
+	
+	@Override
+	public boolean isWarningEnabled() {
+		return julLogger.isLoggable(Level.WARNING);
+	}
+	
 	@Override
 	public void logFatal(String message) {
 		julLogger.log(Level.SEVERE, message);

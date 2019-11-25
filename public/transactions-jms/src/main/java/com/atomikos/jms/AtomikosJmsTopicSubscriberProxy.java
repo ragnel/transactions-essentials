@@ -28,35 +28,35 @@ class AtomikosJmsTopicSubscriberProxy extends AtomikosJmsMessageConsumerProxy
 	
 	private TopicSubscriber getDelegateTopicSubscriber()
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getDelegateTopicSubscriber()..." );
+		LOGGER.logDebug ( this + ": getDelegateTopicSubscriber()..." );
 		TopicSubscriber ret =  ( TopicSubscriber ) getDelegate();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getDelegateTopicSubscriber() returning " + ret );
+		LOGGER.logTrace ( this + ": getDelegateTopicSubscriber() returning " + ret );
 		return ret;
 	}
 
 	public boolean getNoLocal() throws JMSException 
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getNoLocal()..." );
+		LOGGER.logDebug ( this + ": getNoLocal()..." );
 		boolean ret = false;
 		try {
 			ret = getDelegateTopicSubscriber().getNoLocal();
 		} catch (Exception e) {
 			handleException(e);
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getNoLocal() returning " + ret );
+		LOGGER.logTrace ( this + ": getNoLocal() returning " + ret );
 		return ret;
 	}
 
 	public Topic getTopic() throws JMSException 
 	{
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getTopic()..." );
+		LOGGER.logDebug ( this + ": getTopic()..." );
 		Topic ret = null;
 		try {
 			ret = getDelegateTopicSubscriber().getTopic();
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace (  this + ": getTopic() returning " + ret );
+		LOGGER.logTrace (  this + ": getTopic() returning " + ret );
 		return ret;
 	}
 	

@@ -30,114 +30,113 @@ class AtomikosJmsMessageProducerProxy extends ConsumerProducerSupport implements
 	}
 	
 	public void send ( Message msg ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": send ( message )..." );
+		LOGGER.logDebug ( this + ": send ( message )..." );
 		enlist ( );
 		delegate.send ( msg );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": send done." );
+		LOGGER.logTrace ( this + ": send done." );
 	}
 
 	public void close() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug( this + ": close..." );
+		LOGGER.logDebug( this + ": close..." );
 		delegate.close();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": close done." );
+		LOGGER.logTrace ( this + ": close done." );
 	}
 
 	public int getDeliveryMode() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getDeliveryMode()..." );
+		LOGGER.logDebug ( this + ": getDeliveryMode()..." );
 		int ret = delegate.getDeliveryMode();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getDeliveryMode() returning " + ret );
+		LOGGER.logTrace ( this + ": getDeliveryMode() returning " + ret );
 		return ret;
 	}
 
 	public Destination getDestination() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getDestination()..." );
+		LOGGER.logDebug ( this + ": getDestination()..." );
 		Destination ret = delegate.getDestination();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getDestination() returning " + ret );
+		LOGGER.logTrace ( this + ": getDestination() returning " + ret );
 		return ret;
 	}
 
 	public boolean getDisableMessageID() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getDisableMessageID()..." );
+		LOGGER.logDebug ( this + ": getDisableMessageID()..." );
 		boolean ret = delegate.getDisableMessageID();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getDisableMessageID() returning " + ret );
+		LOGGER.logTrace ( this + ": getDisableMessageID() returning " + ret );
 		return ret;
 	}
 
 	public boolean getDisableMessageTimestamp() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getDisableMessageTimestamp()..." );
+		LOGGER.logDebug ( this + ": getDisableMessageTimestamp()..." );
 		boolean ret = delegate.getDisableMessageTimestamp();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getDisableMessageTimestamp() returning " + ret );
+		LOGGER.logTrace ( this + ": getDisableMessageTimestamp() returning " + ret );
 		return ret;
 	}
 
 	public int getPriority() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getPriority()..." );
+		LOGGER.logDebug ( this + ": getPriority()..." );
 		int ret =  delegate.getPriority();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getPriority() returning " + ret );
+		LOGGER.logTrace ( this + ": getPriority() returning " + ret );
 		return ret;
 	}
 
 	public long getTimeToLive() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getTimeToLive()..." );
+		LOGGER.logDebug ( this + ": getTimeToLive()..." );
 		long ret =  delegate.getTimeToLive();
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getTimeToLive() returning " + ret );
+		LOGGER.logTrace ( this + ": getTimeToLive() returning " + ret );
 		return ret;
 	}
 
 
 
 	public void send(Destination dest , Message msg ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": send ( destination , message )..." );
+		LOGGER.logDebug ( this + ": send ( destination , message )..." );
 		enlist ( );
 		delegate.send ( dest , msg );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": send done." );
+		LOGGER.logTrace ( this + ": send done." );
 	}
 
 	public void send(Message msg , int deliveryMode , int priority , long timeToLive )
 			throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": send ( message , deliveryMode , priority , timeToLive )..." );
+		LOGGER.logDebug ( this + ": send ( message , deliveryMode , priority , timeToLive )..." );
 		enlist ( );
 		delegate.send (  msg , deliveryMode , priority , timeToLive );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": send done." );
+		LOGGER.logTrace ( this + ": send done." );
 	}
 
 	public void send ( Destination dest , Message msg , int deliveryMode , int priority ,
 			long timeToLive ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": send ( destination , message , deliveryMode , priority , timeToLive )..." );
+		LOGGER.logDebug ( this + ": send ( destination , message , deliveryMode , priority , timeToLive )..." );
 		enlist ( );
 		delegate.send (  dest , msg , deliveryMode , priority , timeToLive );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": send done." );
+		LOGGER.logTrace ( this + ": send done." );
 	}
 
 	public void setDeliveryMode ( int mode ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setDeliveryMode ( " + mode + " )..." );
+		LOGGER.logDebug ( this + ": setDeliveryMode ( " + mode + " )..." );
 		delegate.setDeliveryMode ( mode );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setDeliveryMode done." );
+		LOGGER.logTrace ( this + ": setDeliveryMode done." );
 	}
 
 	public void setDisableMessageID ( boolean mode ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setDisableMessageID ( " + mode + " )..." );
+		LOGGER.logDebug ( this + ": setDisableMessageID ( " + mode + " )..." );
 		delegate.setDisableMessageID ( mode );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setDisableMessageID done." );
+		LOGGER.logTrace ( this + ": setDisableMessageID done." );
 	}
 
 	public void setDisableMessageTimestamp ( boolean mode ) throws JMSException {
-		
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setDisableMessageTimestamp ( " + mode + " )..." );
+		LOGGER.logDebug ( this + ": setDisableMessageTimestamp ( " + mode + " )..." );
 		delegate.setDisableMessageTimestamp ( mode );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setDisableMessageTimestamp done." );
+		LOGGER.logTrace ( this + ": setDisableMessageTimestamp done." );
 	}
 
 	public void setPriority ( int pty ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setPriority ( " + pty + " )..." );
+		LOGGER.logDebug ( this + ": setPriority ( " + pty + " )..." );
 		delegate.setPriority ( pty );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setPriority done." );
+		LOGGER.logTrace ( this + ": setPriority done." );
 	}
 
 	public void setTimeToLive ( long ttl ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setTimeToLive ( " + ttl + " )..." );
+		LOGGER.logDebug ( this + ": setTimeToLive ( " + ttl + " )..." );
 		delegate.setTimeToLive ( ttl );
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setTimeToLive done." );
+		LOGGER.logTrace ( this + ": setTimeToLive done." );
 	}
 	
 	public String toString() 

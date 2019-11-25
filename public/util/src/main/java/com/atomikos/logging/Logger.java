@@ -41,5 +41,7 @@ public interface Logger {
 	boolean isErrorEnabled();
 
 	boolean isInfoEnabled();
+	
+	boolean isWarningEnabled();
 
 }

@@ -135,7 +135,7 @@ implements JtaAwareNonXaConnection
     {
 
         try {
-        	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": resetting autoCommit to " + originalAutoCommitState );
+        	LOGGER.logDebug ( this + ": resetting autoCommit to " + originalAutoCommitState );
         	//see case 24567
             wrapped.setAutoCommit ( originalAutoCommitState );
         }catch ( Exception ex ){
@@ -221,9 +221,9 @@ implements JtaAwareNonXaConnection
 		if ( methodName.equals ( "getInvocationHandler" ) ) return this;
 
 		if (methodName.equals("reap")) {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": reap()..." );
+			LOGGER.logDebug ( this + ": reap()..." );
 			reap();
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": reap done." );
+			LOGGER.logTrace ( this + ": reap done." );
 			return null;
 		}
 		else if ( methodName.equals ("isNoLongerInUse") ) {
@@ -233,9 +233,9 @@ implements JtaAwareNonXaConnection
 			return m.invoke( this , args);
 		}
 		else if (methodName.equals("isClosed")) {
-			if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": isClosed()..." );
+			LOGGER.logDebug ( this + ": isClosed()..." );
 			Object ret = Boolean.valueOf ( isStale() );
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": isClosed() returning " + ret );
+			LOGGER.logTrace ( this + ": isClosed() returning " + ret );
 			return ret;
 		}
         // detect illegal use after connection was resubmitted to the pool
@@ -252,9 +252,9 @@ implements JtaAwareNonXaConnection
 	        	AtomikosSQLException.throwAtomikosSQLException("Cannot call 'setAutoCommit(true)' while a global transaction is running");
 	        }
 	        if (methodName.equals("getAutoCommit")) {
-	        	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getAutoCommit()..." );
+	        	LOGGER.logDebug ( this + ": getAutoCommit()..." );
 	        	Object ret = Boolean.FALSE;
-	        	if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getAutoCommit() returning false." );
+	        	LOGGER.logTrace ( this + ": getAutoCommit() returning false." );
 	        	return ret;
 	        }
 
@@ -280,14 +280,14 @@ implements JtaAwareNonXaConnection
 
         // check for delistment
         if (CLOSE_METHODS.contains(methodName)) {
-        	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": close..." );
+        	LOGGER.logDebug ( this + ": close..." );
 			decUseCount();
-			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": close done." );
+			LOGGER.logTrace ( this + ": close done." );
 			return null;
 		}
 		else {
 			try {
-				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + methodName + " on vendor connection..." );
+				LOGGER.logDebug ( this + ": calling " + methodName + " on vendor connection..." );
 				ret =  m.invoke ( wrapped , args);
 
 			} catch (Exception ex) {
@@ -295,7 +295,7 @@ implements JtaAwareNonXaConnection
 				JdbcConnectionProxyHelper.convertProxyError ( ex , "Error delegating '" + methodName + "' call" );
 			}
 		}
-        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
+        LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
         if ( ret instanceof Statement ) {
         	Statement s = ( Statement ) ret;
         	addStatement ( s );
@@ -343,12 +343,11 @@ implements JtaAwareNonXaConnection
     {
 
         if ( isNoLongerInUse() ) {
-        	LOGGER
-                    .logTrace ( "ThreadLocalConnection: detected reusability" );
+        	LOGGER.logTrace ( "ThreadLocalConnection: detected reusability" );
             setStale();
             pooledConnection.fireOnXPooledConnectionTerminated();
         } else {
-            if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "ThreadLocalConnection: not reusable yet" );
+            LOGGER.logTrace ( "ThreadLocalConnection: not reusable yet" );
         }
 
     }
@@ -370,15 +369,15 @@ implements JtaAwareNonXaConnection
 		// delegate commit or rollback to the underlying connection
         try {
             if ( commit ) {
-                if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": committing on connection...");
+                LOGGER.logDebug ( this + ": committing on connection...");
                 wrapped.commit ();
 
             } else {
             	// see case 84252
             	forceCloseAllPendingStatements ( false );
- 				if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": transaction aborting - " +
+ 				LOGGER.logDebug ( this + ": transaction aborting - " +
  						"pessimistically closing all pending statements to avoid autoCommit after timeout" );
-            	if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": rolling back on connection...");
+            	LOGGER.logDebug ( this + ": rolling back on connection...");
                 wrapped.rollback ();
 
             }

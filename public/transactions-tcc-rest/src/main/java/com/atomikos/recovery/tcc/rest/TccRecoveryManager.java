@@ -62,7 +62,7 @@ public class TccRecoveryManager {
 
 	private void retryConfirmOnParticipant(String uri)
 			throws HeurRollbackException {
-		if (LOGGER.isDebugEnabled()) LOGGER.logDebug("Retrying confirm on participant: " + uri);
+		LOGGER.logDebug("Retrying confirm on participant: " + uri);
 		tccTransport.put(uri);
 	}
 	

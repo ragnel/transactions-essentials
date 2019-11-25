@@ -20,8 +20,10 @@ import java.util.Vector;
 
 import com.atomikos.finitestates.FSM;
 import com.atomikos.finitestates.FSMEnterEvent;
+import com.atomikos.finitestates.FSMEnterEventSource;
 import com.atomikos.finitestates.FSMEnterListener;
 import com.atomikos.finitestates.FSMImp;
+import com.atomikos.finitestates.FSMPreEnterEventSource;
 import com.atomikos.finitestates.FSMPreEnterListener;
 import com.atomikos.finitestates.FSMTransitionEvent;
 import com.atomikos.finitestates.FSMTransitionListener;
@@ -134,8 +136,6 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
      *            The root tid.
      * @param coord
      *            The RecoverCoordinator, null if root.
-     * @param console
-     *            The console to log to, or null if none.
      * @param heuristic_commit
      *            Whether to do commit on heuristic.
      * @param timeout
@@ -276,8 +276,6 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
      *
      * @param timeout
      *            The timeout for the thread wakeup interval.
-     * @param console
-     *            The console, null if none.
      */
 
     private void startThreads ( long timeout )
@@ -307,7 +305,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
    
     void setState ( TxState state ) throws IllegalStateException
     {
-        if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Coordinator " + getCoordinatorId ()
+        LOGGER.logTrace ( "Coordinator " + getCoordinatorId ()
                 + " entering state: " + state.toString () );
         fsm_.setState ( state );
 
@@ -326,7 +324,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
 
    
     /**
-     * @see FSMEnterEventSource.
+     * @see FSMEnterEventSource
      */
 
     void addFSMEnterListener ( FSMEnterListener l, TxState state )
@@ -336,8 +334,8 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
   
-    /*
-     * @see FSMPreEnterEventSource.
+    /**
+     * @see FSMPreEnterEventSource
      */
 
     public void addFSMPreEnterListener ( FSMPreEnterListener l, TxState state )
@@ -348,7 +346,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
 
 
     /**
-     * @see CompositeCoordinator.
+     * @see CompositeCoordinator
      */
 
     public RecoveryCoordinator getRecoveryCoordinator ()
@@ -357,7 +355,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see CompositeCoordinator.
+     * @see CompositeCoordinator
      */
 
     public Participant getParticipant () throws UnsupportedOperationException
@@ -366,7 +364,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see com.atomikos.icatch.CompositeCoordinator.
+     * @see com.atomikos.icatch.CompositeCoordinator
      */
 
     public String getCoordinatorId ()
@@ -447,7 +445,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
 	}
 
 	/**
-     * @see FSMPreEnterListener.
+     * @see FSMPreEnterListener
      */
 
     public void preEnter ( FSMEnterEvent event ) throws IllegalStateException
@@ -475,7 +473,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public void forget ()
@@ -484,7 +482,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public void setCascadeList ( Map<String,Integer> allParticipants )
@@ -494,7 +492,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public void setGlobalSiblingCount ( int count )
@@ -503,7 +501,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public int prepare () throws RollbackException,
@@ -522,12 +520,10 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
         synchronized ( fsm_ ) {
         	ret = stateHandler_.prepare ();
         	if ( ret == Participant.READ_ONLY ) {
-
-        		 if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace (  "prepare() of Coordinator  " + getCoordinatorId ()
+        		 LOGGER.logTrace (  "prepare() of Coordinator  " + getCoordinatorId ()
          				+ " returning READONLY" );
         	} else {
-
-        		 if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "prepare() of Coordinator  " + getCoordinatorId ()
+        		 LOGGER.logTrace ( "prepare() of Coordinator  " + getCoordinatorId ()
          				+ " returning YES vote");
         	}
         }
@@ -536,7 +532,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public void commit ( boolean onePhase )
@@ -550,7 +546,7 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     }
 
     /**
-     * @see Participant.
+     * @see Participant
      */
 
     public void rollback () throws HeurCommitException,
@@ -599,17 +595,15 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
 
 
     /**
-     * @see RecoveryCoordinator.
+     * @see RecoveryCoordinator
      */
 
     public Boolean replayCompletion ( Participant participant )
             throws IllegalStateException
     {
-    	if(LOGGER.isDebugEnabled()){
-    		LOGGER.logDebug("replayCompletion ( " + participant
+    	LOGGER.logDebug("replayCompletion ( " + participant
                     + " ) received by coordinator " + getCoordinatorId ()
                     + " for participant " + participant.toString ());
-    	}
         Boolean ret = null;
         synchronized ( fsm_ ) {
         	ret = stateHandler_.replayCompletion ( participant );
@@ -657,12 +651,12 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     {
     	synchronized ( fsm_ ) {
     		if ( timer_ != null ) {
-    			if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : stopping timer..." );
+    			LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : stopping timer..." );
     			timer_.stop ();
     		}
-    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : disposing statehandler " + stateHandler_.getState() + "..." );
+    		LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : disposing statehandler " + stateHandler_.getState() + "..." );
     		stateHandler_.dispose ();
-    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : disposed." );
+    		LOGGER.logTrace ( "Coordinator " + getCoordinatorId() + " : disposed." );
     	}
     }
 
@@ -686,8 +680,12 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     			} else {
     				int prepareResult = prepare ();
     				// make sure to only do commit if NOT read only
-    				if ( prepareResult != Participant.READ_ONLY )
-    					commit ( false );
+    				if ( prepareResult != Participant.READ_ONLY ) {
+						commit(false);
+					} else {
+						this.notifySynchronizationsAfterCompletion(TxState.TERMINATED);
+						LOGGER.logWarning("Calling notifySynchronizationAfterCompletion from terminate");
+					}
     			}
     		} else {
     			rollback ();
@@ -703,10 +701,10 @@ public class CoordinatorImp implements CompositeCoordinator, Participant,
     		addParticipant ( p );
     	} catch ( IllegalStateException alreadyTerminated ) {
     		//happens in rollback after timeout - see case 27857; ignore but log
-    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Error during setRollbackOnly" , alreadyTerminated );
+    		LOGGER.logTrace ( "Error during setRollbackOnly" , alreadyTerminated );
     	} catch ( RollbackException e ) {
     		//ignore: corresponds to desired outcome
-    		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Error during setRollbackOnly" , e );
+    		LOGGER.logTrace ( "Error during setRollbackOnly" , e );
         }
     }
 

@@ -19,49 +19,65 @@ public class Log4j2Logger implements Logger {
 	}
 	@Override
 	public void logError(String message) {
-		logger.error(message);
+		if (isErrorEnabled()) {
+			logger.error(message);
+		}
 	}
 
 	@Override
 	public void logWarning(String message) {
-		logger.warn(message);
+		if (isWarningEnabled()) {
+			logger.warn(message);
+		}
 	}
 	
 	@Override
 	public void logInfo(String message) {
-		logger.info(message);
+		if (isInfoEnabled()) {
+			logger.info(message);
+		}
 	}
 
 	@Override
 	public void logDebug(String message) {
-		logger.debug(message);
+		if (isDebugEnabled()) {
+			logger.debug(message);
+		}
 	}
 
 	@Override
 	public void logTrace(String message) {
-		logger.trace(message);
+		if (isTraceEnabled()) {
+			logger.trace(message);
+		}
 	}
 
 	@Override
 	public void logError(String message, Throwable error) {
-		logger.error(message, error);
+		if (isErrorEnabled()) {
+			logger.error(message, error);
+		}
 	}
 
 	@Override
 	public void logWarning(String message, Throwable error) {
-		logger.warn(message, error);
-
+		if (isWarningEnabled()) {
+			logger.warn(message, error);
+		}
 	}
 
 	@Override
 	public void logDebug(String message, Throwable error) {
-		logger.debug(message, error);
+		if (isDebugEnabled()) {
+			logger.debug(message, error);
+		}
 	}
 
 	@Override
 	public void logTrace(String message, Throwable error) {
-		logger.trace(message, error);
-
+		if (isTraceEnabled()) {
+			logger.trace(message, error);
+		}
 	}
 
 	@Override
@@ -80,13 +96,21 @@ public class Log4j2Logger implements Logger {
 	}
 	@Override
 	public void logInfo(String message, Throwable error) {
-		logger.info(message, error);
+		if (isInfoEnabled()) {
+			logger.info(message, error);
+		}
 	}
 	
 	@Override
 	public boolean isInfoEnabled() {
 		return logger.isInfoEnabled();
 	}
+	
+	@Override
+	public boolean isWarningEnabled() {
+		return logger.isWarnEnabled();
+	}
+	
 	@Override
 	public void logFatal(String message) {
 		logger.fatal(message);

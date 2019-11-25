@@ -184,11 +184,10 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			}
 		} catch (XAException xa) {
 			// timed out?
-			if (LOGGER.isTraceEnabled())
-				LOGGER.logTrace(this.resourcename
+			LOGGER.logTrace(this.resourcename
 						+ ": XAResource needs refresh", xa);
 
-				this.xaresource = this.resource.getXAResource();
+			this.xaresource = this.resource.getXAResource();
 
 		}
 
@@ -199,8 +198,7 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 	}
 
 	private void forceRefreshXAConnection() throws XAException {
-		if (LOGGER.isTraceEnabled())
-			LOGGER.logTrace(this.resourcename
+		LOGGER.logTrace(this.resourcename
 					+ ": forcing refresh of XAConnection...");
 
 		try {
@@ -222,14 +220,14 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 	}
 
 	/**
-	 * @see ResourceTransaction.
+	 * @see ResourceTransaction
 	 */
 	public String getTid() {
 		return this.tid;
 	}
 
 	/**
-	 * @see ResourceTransaction.
+	 * @see ResourceTransaction
 	 */
 
 	@Override
@@ -243,20 +241,18 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 		// This is required for some hibernate connection release strategies.
 		if (this.state.equals(TxState.ACTIVE)) {
 			try {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.logDebug("XAResource.end ( " + this.xidToHexString
+				LOGGER.logDebug("XAResource.end ( " + this.xidToHexString
 							+ " , XAResource.TMSUCCESS ) on resource "
 							+ this.resourcename
 							+ " represented by XAResource instance "
 							+ this.xaresource);
-				}
+				
 				this.xaresource.end(this.xid, XAResource.TMSUCCESS);
 
 			} catch (XAException xaerr) {
 				String msg = interpretErrorCode(this.resourcename, "end",
 						this.xid, xaerr.errorCode);
-				if (LOGGER.isTraceEnabled())
-					LOGGER.logTrace(msg, xaerr);
+				LOGGER.logTrace(msg, xaerr);
 				// don't throw: fix for case 102827
 			}
 			setState(TxState.LOCALLY_DONE);
@@ -269,7 +265,7 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 	}
 
 	/**
-	 * @see ResourceTransaction.
+	 * @see ResourceTransaction
 	 */
 
 	@Override
@@ -287,13 +283,12 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 					+ this.state);
 
 		try {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.start ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.start ( " + this.xidToHexString
 						+ " , " + logFlag + " ) on resource "
 						+ this.resourcename
 						+ " represented by XAResource instance "
 						+ this.xaresource);
-			}
+			
 			this.xaresource.start(this.xid, flag);
 
 		} catch (XAException xaerr) {
@@ -377,10 +372,9 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			// refresh xaresource for MQSeries: seems to close XAResource after
 			// suspend???
 			testOrRefreshXAResourceFor2PC();
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.logTrace("About to call prepare on XAResource instance: "
+			LOGGER.logTrace("About to call prepare on XAResource instance: "
 						+ this.xaresource);
-			}
+			
 			ret = this.xaresource.prepare(this.xid);
 
 		} catch (XAException xaerr) {
@@ -397,28 +391,26 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 		}
 		setState(TxState.IN_DOUBT);
 		if (ret == XAResource.XA_RDONLY) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.prepare ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.prepare ( " + this.xidToHexString
 						+ " ) returning XAResource.XA_RDONLY " + "on resource "
 						+ this.resourcename
 						+ " represented by XAResource instance "
 						+ this.xaresource);
-			}
+			
 			return Participant.READ_ONLY;
 		} else {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.prepare ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.prepare ( " + this.xidToHexString
 						+ " ) returning OK " + "on resource "
 						+ this.resourcename
 						+ " represented by XAResource instance "
 						+ this.xaresource);
-			}
+			
 			return Participant.READ_ONLY + 1;
 		}
 	}
 
 	/**
-	 * @see Participant.
+	 * @see Participant
 	 */
 
 	@Override
@@ -451,12 +443,11 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			// refresh xaresource for MQSeries: seems to close XAResource after
 			// suspend???
 			testOrRefreshXAResourceFor2PC();
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.rollback ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.rollback ( " + this.xidToHexString
 						+ " ) " + "on resource " + this.resourcename
 						+ " represented by XAResource instance "
 						+ this.xaresource);
-			}
+			
 			this.xaresource.rollback(this.xid);
 
 		} catch (ResourceException resErr) {
@@ -467,9 +458,8 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			String msg = interpretErrorCode(this.resourcename, "rollback",
 					this.xid, xaerr.errorCode);
 			if (XAException.XA_RBBASE <= xaerr.errorCode
-					&& xaerr.errorCode <= XAException.XA_RBEND) { 
-				if (LOGGER.isTraceEnabled())
-					LOGGER.logTrace(msg);
+					&& xaerr.errorCode <= XAException.XA_RBEND) {
+				LOGGER.logTrace(msg);
 			} else {
 				LOGGER.logWarning(msg, xaerr);
 				switch (xaerr.errorCode) {
@@ -487,9 +477,7 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 					break;
 				case XAException.XAER_NOTA:
 					// see case 21552
-					if (LOGGER.isTraceEnabled()) {
-						LOGGER.logTrace("XAResource.rollback: invalid Xid - already rolled back in resource?");
-					}
+					LOGGER.logTrace("XAResource.rollback: invalid Xid - already rolled back in resource?");
 					setState(TxState.TERMINATED);
 					// ignore error - corresponds to semantics of rollback!
 					break;
@@ -549,11 +537,10 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			if (!onePhase) { // cf case 167209
 				testOrRefreshXAResourceFor2PC();
 			}
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.commit ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.commit ( " + this.xidToHexString
 						+ " , " + onePhase + " ) on resource " + this.resourcename + 
 						" represented by XAResource instance " + this.xaresource);
-			}
+			
 			this.xaresource.commit(this.xid, onePhase);
 
 		} catch (XAException xaerr) {
@@ -663,8 +650,7 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 	 */
 
 	public void setXAResource(XAResource xaresource) {
-		if (LOGGER.isTraceEnabled())
-			LOGGER.logTrace(this + ": about to switch to XAResource "
+		LOGGER.logTrace(this + ": about to switch to XAResource "
 					+ xaresource);
 		this.xaresource = xaresource;
 		try {
@@ -675,8 +661,7 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 			LOGGER.logWarning(msg, e);
 			// we don't care
 		}
-		if (LOGGER.isTraceEnabled())
-			LOGGER.logTrace("XAResourceTransaction " + getXid()
+		LOGGER.logTrace("XAResourceTransaction " + getXid()
 					+ ": switched to XAResource " + xaresource);
 	}
 
@@ -689,14 +674,13 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 		// not interfere with our suspends (triggered by transaction suspend)
 		if (!this.isXaSuspended) {
 			try {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.logDebug("XAResource.suspend ( "
+				LOGGER.logDebug("XAResource.suspend ( "
 							+ this.xidToHexString
 							+ " , XAResource.TMSUSPEND ) on resource "
 							+ this.resourcename
 							+ " represented by XAResource instance "
 							+ this.xaresource);
-				}
+				
 				this.xaresource.end(this.xid, XAResource.TMSUSPEND);
 
 				this.isXaSuspended = true;
@@ -715,13 +699,12 @@ public class XAResourceTransaction implements ResourceTransaction, Participant {
 
 	public void xaResume() throws XAException {
 		try {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.logDebug("XAResource.start ( " + this.xidToHexString
+			LOGGER.logDebug("XAResource.start ( " + this.xidToHexString
 						+ " , XAResource.TMRESUME ) on resource "
 						+ this.resourcename
 						+ " represented by XAResource instance "
 						+ this.xaresource);
-			}
+			
 			this.xaresource.start(this.xid, XAResource.TMRESUME);
 
 			this.isXaSuspended = false;

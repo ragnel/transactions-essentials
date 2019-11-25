@@ -60,10 +60,8 @@ class IndoubtStateHandler extends CoordinatorStateHandler
                     // to avoid hitting the coordinator with replays from the start
                 	// (WS-T coordinator will abort if it receives a replay during preparing)
                     if ( getCoordinator ().getSuperiorRecoveryCoordinator () != null ) {
-                    	if(LOGGER.isDebugEnabled()){
-                    		LOGGER.logDebug("Requesting replayCompletion on behalf of coordinator "
+                    	LOGGER.logDebug("Requesting replayCompletion on behalf of coordinator "
                                     + getCoordinator ().getCoordinatorId ());
-                    	}
 
                         getCoordinator().getSuperiorRecoveryCoordinator().
                         replayCompletion ( getCoordinator () );

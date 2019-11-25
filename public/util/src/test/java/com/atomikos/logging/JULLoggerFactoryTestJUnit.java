@@ -94,7 +94,7 @@ public class JULLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	}
 
 	public void testIsInfoEnabled() {
-		getUnderlyingLogger().setLevel(Level.WARNING);
+		getUnderlyingLogger().setLevel(Level.INFO);
 		super.testIsInfoEnabled();
 	}
 
@@ -107,7 +107,10 @@ public class JULLoggerFactoryTestJUnit extends AbstractLoggerFactoryTest {
 	protected void configureLoggingFrameworkWithDebug() {
 		getUnderlyingLogger().setLevel(Level.FINE);
 	}
-
+	
+	@Override
+	protected void configureLoggingFrameworkWithWarning() { getUnderlyingLogger().setLevel(Level.WARNING); }
+	
 	private java.util.logging.Logger getUnderlyingLogger() {
 		return java.util.logging.Logger.getLogger(getClass().getName());
 	}

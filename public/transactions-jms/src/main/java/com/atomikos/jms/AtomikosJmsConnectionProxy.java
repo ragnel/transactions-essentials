@@ -58,7 +58,7 @@ implements SessionHandleStateChangeListener
  	   }
  	   catch ( Exception e ) {
  		   //ignore: workaround code
- 		   if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "JMS: driver complains while enforcing XA mode - ignore if no later errors:" , e );
+ 		   LOGGER.logTrace ( "JMS: driver complains while enforcing XA mode - ignore if no later errors:" , e );
  	   } 
  	   finally {
  		   if ( s != null ) {
@@ -66,7 +66,7 @@ implements SessionHandleStateChangeListener
  				   s.close();
  			   } catch ( JMSException e ) {
  				   //ignore: workaround code
- 				   if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "JMS: driver complains while enforcing XA mode - ignore if no later errors:" , e );
+ 				   LOGGER.logTrace ( "JMS: driver complains while enforcing XA mode - ignore if no later errors:" , e );
  			   }
  		   }
  	   }
@@ -129,7 +129,7 @@ implements SessionHandleStateChangeListener
 			}
 			
 			if ( CLOSE_METHOD.equals ( methodName ) ) {
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace( this + ": intercepting call to close" );
+				LOGGER.logTrace( this + ": intercepting call to close" );
 				close();
 				return null;
 			} else if ( reaped ) {
@@ -147,7 +147,7 @@ implements SessionHandleStateChangeListener
 				if ( createXaSession(transactedFlag.booleanValue()) ) {
 					session = recycleSession();
 					if (session == null) {
-						if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": creating XA-capable session..." );
+						LOGGER.logDebug ( this + ": creating XA-capable session..." );
 						forceConnectionIntoXaMode ( delegate );
 						XASession wrapped = null;
 						try {
@@ -164,7 +164,7 @@ implements SessionHandleStateChangeListener
 					CompositeTransactionManager ctm = Configuration.getCompositeTransactionManager();
 					if ( ctm != null ) ct = ctm.getCompositeTransaction();
 					if ( ct != null && ct.getProperty ( TransactionManagerImp.JTA_PROPERTY_NAME ) != null ) {
-						if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": creating NON-XA session - the resulting JMS work will NOT be part of the JTA transaction!" );
+						LOGGER.logDebug ( this + ": creating NON-XA session - the resulting JMS work will NOT be part of the JTA transaction!" );
 					}
 					Integer ackMode = ( Integer ) args[1];
 					Session wrapped = null;
@@ -177,14 +177,14 @@ implements SessionHandleStateChangeListener
 					session = ( Session ) AtomikosJmsNonXaSessionProxy.newInstance( wrapped , owner , this );
 					addSession ( session );
 				}
-				if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": returning " + session );
+				LOGGER.logTrace ( this + ": returning " + session );
 				return session;
 				
 			} else {		
 			
-					if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver...");
+					LOGGER.logDebug ( this + ": calling " + methodName + " on JMS driver...");
 					Object ret = method.invoke(delegate, args);
-					if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
+					LOGGER.logTrace ( this + ": " + methodName + " returning " + ret );
 					return ret;
 			
 			}
@@ -231,7 +231,7 @@ implements SessionHandleStateChangeListener
 					//recycle if either inactive in this tx, OR if active (since a new session will be created anyway, and 
 					//concurrent sessions are allowed on the same underlying connection!
 					if ( proxy.isInactiveTransaction(current) || proxy.isInTransaction( current ) ) {
-						if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": recycling session " + proxy );
+						LOGGER.logDebug ( this + ": recycling session " + proxy );
 						proxy.recycle();
 						return session;
 					}
@@ -242,10 +242,10 @@ implements SessionHandleStateChangeListener
 	}
 
 	private void close() {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": close()...");
+		LOGGER.logDebug ( this + ": close()...");
 		
 		closed = true;		
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": closing " + sessions.size() + " session(s)" );
+		LOGGER.logTrace ( this + ": closing " + sessions.size() + " session(s)" );
 		
 		//close all sessions to make sure the session close notifications are done!
 		synchronized (sessions) {
@@ -260,18 +260,18 @@ implements SessionHandleStateChangeListener
 			}
 		}
 		
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace( this + ": is available ? " + isAvailable() );
+		LOGGER.logTrace( this + ": is available ? " + isAvailable() );
 		if (isAvailable())
 			owner.onTerminated();
 		
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": closed." );	
+		LOGGER.logTrace ( this + ": closed." );
 		//leave destroy to the owning pooled connection - that one knows when any and all 2PCs are done
 	}
 
 
 	//should only be called after ALL sessions are done, i.e. when the connection can be pooled again
 	synchronized void destroy() {
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": closing connection and all " + sessions.size() + " session(s)" );
+		LOGGER.logTrace ( this + ": closing connection and all " + sessions.size() + " session(s)" );
 
 		//close all sessions to make sure the session close notifications are done!
 		synchronized (sessions) {

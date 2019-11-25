@@ -43,14 +43,10 @@ public class XaResourceRecoveryManager {
 				XID xid = wrapWithOurOwnXidToHaveCorrectEqualsAndHashCode ( vendorXid );
                 if ( branch.startsWith ( tmUniqueName ) ) {
                 	ret = true;
-                    if(LOGGER.isDebugEnabled()){
-                    	LOGGER.logDebug("Resource " + tmUniqueName + " recovering XID: " + xid);
-                    }
+                	LOGGER.logDebug("Resource " + tmUniqueName + " recovering XID: " + xid);
                 } else {
-                	if(LOGGER.isDebugEnabled()){
-                		LOGGER.logDebug("Resource " + tmUniqueName + ": XID " + xid + 
+                	LOGGER.logDebug("Resource " + tmUniqueName + ": XID " + xid +
                 		" with branch " + branch + " is not under my responsibility");
-                	}
                 }
                 return ret;
 			}
@@ -81,7 +77,7 @@ public class XaResourceRecoveryManager {
 	}
 
 	private void replayCommit(XID xid, XAResource xaResource) {
-		if (LOGGER.isDebugEnabled()) LOGGER.logDebug("Replaying commit of xid: " + xid);
+		LOGGER.logDebug("Replaying commit of xid: " + xid);
 		try {
 			xaResource.commit(xid, false);
 			log.terminated(xid);
@@ -166,7 +162,7 @@ public class XaResourceRecoveryManager {
 	private void attemptPresumedAbort(XID xid, XAResource xaResource) {
 		try {
 			log.presumedAborting(xid);
-			if (LOGGER.isDebugEnabled()) LOGGER.logDebug("Presumed abort of xid: " + xid);
+			LOGGER.logDebug("Presumed abort of xid: " + xid);
 			try {
 				xaResource.rollback(xid);
 				log.terminated(xid); 

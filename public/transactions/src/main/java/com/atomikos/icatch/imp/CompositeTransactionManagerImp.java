@@ -200,14 +200,10 @@ public class CompositeTransactionManagerImp implements CompositeTransactionManag
         CompositeTransaction ct = null;
         ct = getCurrentTx ();
         if ( ct != null ) {
-        	if(LOGGER.isTraceEnabled()){
-            	LOGGER.logTrace("getCompositeTransaction()  returning instance with id "
+        	LOGGER.logTrace("getCompositeTransaction()  returning instance with id "
                         + ct.getTid ());
-        	}
         } else{
-        	if(LOGGER.isTraceEnabled()){
-        		LOGGER.logTrace("getCompositeTransaction() returning NULL!");
-        	}
+        	LOGGER.logTrace("getCompositeTransaction() returning NULL!");
         }
 
         return ct;
@@ -222,15 +218,11 @@ public class CompositeTransactionManagerImp implements CompositeTransactionManag
     {
         CompositeTransaction ret = getTransactionService().getCompositeTransaction ( tid );
         if ( ret != null ) {
-        	if(LOGGER.isTraceEnabled()){
-        		LOGGER.logTrace("getCompositeTransaction ( " + tid
+        	LOGGER.logTrace("getCompositeTransaction ( " + tid
                     + " ) returning instance with tid " + ret.getTid ());
-        	}
         } else {
-        	if(LOGGER.isTraceEnabled()){
-        		LOGGER.logTrace( "getCompositeTransaction ( " + tid
+        	LOGGER.logTrace( "getCompositeTransaction ( " + tid
                     + " ) returning null");
-        	}
         }
         return ret;
     }
@@ -283,15 +275,11 @@ public class CompositeTransactionManagerImp implements CompositeTransactionManag
 
         CompositeTransaction ret = getCurrentTx ();
         if ( ret != null ) {
-        	if(LOGGER.isDebugEnabled()){
-        		LOGGER.logDebug("suspend() for transaction " + ret.getTid ());
-        	}
+        	LOGGER.logDebug("suspend() for transaction " + ret.getTid ());
         	Thread thread = Thread.currentThread();   
             removeThreadMappings ( thread );
         } else {
-        	if(LOGGER.isDebugEnabled()){
-        		LOGGER.logDebug("suspend() called without a transaction context");
-        	}
+        	LOGGER.logDebug("suspend() called without a transaction context");
         }
         return ret;
 
@@ -322,7 +310,7 @@ public class CompositeTransactionManagerImp implements CompositeTransactionManag
 
         Thread thread = Thread.currentThread ();
         restoreThreadMappings ( ancestors, thread );
-        if(LOGGER.isDebugEnabled()) LOGGER.logDebug("resume ( " + ct + " ) done for transaction " + ct.getTid ());
+        LOGGER.logDebug("resume ( " + ct + " ) done for transaction " + ct.getTid ());
         
     }
 
@@ -391,12 +379,10 @@ public class CompositeTransactionManagerImp implements CompositeTransactionManag
         ct = getCurrentTx ();
         if ( ct == null ) {
             ret = getTransactionService().createCompositeTransaction ( timeout );
-            if(LOGGER.isDebugEnabled()){
-            	LOGGER.logDebug("createCompositeTransaction ( " + timeout + " ): "
+            LOGGER.logDebug("createCompositeTransaction ( " + timeout + " ): "
                     + "created new ROOT transaction with id " + ret.getTid ());
-            }
         } else {
-        	 if(LOGGER.isDebugEnabled()) LOGGER.logDebug("createCompositeTransaction ( " + timeout + " )");
+        	LOGGER.logDebug("createCompositeTransaction ( " + timeout + " )");
             ret = ct.createSubTransaction ();
 
         }

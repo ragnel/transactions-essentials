@@ -26,7 +26,7 @@ import com.atomikos.logging.LoggerFactory;
 
 public abstract class AbstractXPooledConnection implements XPooledConnection {
 	private static final Logger LOGGER = LoggerFactory.createLogger(AbstractXPooledConnection.class);
-
+	
 	private long lastTimeAcquired = System.currentTimeMillis();
 	private long lastTimeReleased = System.currentTimeMillis();
 	private List<XPooledConnectionEventListener> poolEventListeners = new ArrayList<XPooledConnectionEventListener>();
@@ -34,12 +34,35 @@ public abstract class AbstractXPooledConnection implements XPooledConnection {
 	private ConnectionPoolProperties props;
 	private long creationTime = System.currentTimeMillis();
 	private final AtomicBoolean isConcurrentlyBeingAcquired = new AtomicBoolean(false);
-
+	
+	private static final String TAB = "\t";
+	static final String EMPTY_STRING = "";
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	
+	public static String toString(StackTraceElement[] stackTrace) {
+		if (stackTrace != null) {
+			 StringBuffer stackTraces = new StringBuffer();
+			 String lineSeparator = EMPTY_STRING;
+			 for (StackTraceElement ste : stackTrace) {
+				 stackTraces.append(lineSeparator);
+				 lineSeparator = LINE_SEPARATOR;
+				 stackTraces.append(TAB);
+				 stackTraces.append(ste);
+			 }
+			 return stackTraces.toString();
+		}
+		return EMPTY_STRING;
+	}
 	
 	protected AbstractXPooledConnection ( ConnectionPoolProperties props ) 
 	{
 		this.props = props;
 	}
+	
+	protected void processStackTrace() {
+		LOGGER.logWarning ( this + ": reaping connection - see stacktrace below for how the connection was last acquired (if there is a connection leak then this may help you find it in your application-specific part of this stack trace)" );
+		LOGGER.logWarning(AbstractXPooledConnection.toString(Thread.currentThread().getStackTrace()));
+	 }
 
 	public long getLastTimeAcquired() {
 		return lastTimeAcquired;
@@ -63,6 +86,7 @@ public abstract class AbstractXPooledConnection implements XPooledConnection {
 		
 		if ( currentProxy != null ) {
 			LOGGER.logWarning ( this + ": reaping connection..." );
+			processStackTrace();
 			currentProxy.reap();
 		}
 		updateLastTimeReleased();

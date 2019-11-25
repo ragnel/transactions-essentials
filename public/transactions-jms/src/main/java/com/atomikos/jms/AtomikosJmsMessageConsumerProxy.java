@@ -35,7 +35,7 @@ class AtomikosJmsMessageConsumerProxy extends ConsumerProducerSupport implements
 	}
 	
 	public Message receive() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": receive()..." );
+		LOGGER.logDebug ( this + ": receive()..." );
 		Message ret = null;
 		try {
 			enlist();
@@ -43,12 +43,12 @@ class AtomikosJmsMessageConsumerProxy extends ConsumerProducerSupport implements
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": receive returning " + ret );
+		LOGGER.logTrace ( this + ": receive returning " + ret );
 		return ret;
 	}
 
 	public Message receive ( long timeout ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": receive ( " + timeout + ")..." );
+		LOGGER.logDebug ( this + ": receive ( " + timeout + ")..." );
 		
 		Message ret = null;
 		try {
@@ -57,12 +57,12 @@ class AtomikosJmsMessageConsumerProxy extends ConsumerProducerSupport implements
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": receive returning " + ret );
+		LOGGER.logTrace ( this + ": receive returning " + ret );
 		return ret;
 	}
 
 	public Message receiveNoWait() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": receiveNoWait()..." );
+		LOGGER.logDebug ( this + ": receiveNoWait()..." );
 		
 		Message ret = null;
 		try {
@@ -71,53 +71,53 @@ class AtomikosJmsMessageConsumerProxy extends ConsumerProducerSupport implements
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": receiveNoWait returning " + ret );
+		LOGGER.logTrace ( this + ": receiveNoWait returning " + ret );
 		return ret;
 	}
 
 	public void close() throws JMSException {
 		//note: delist is done at session level!
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": close..." );
+		LOGGER.logDebug ( this + ": close..." );
 		try {
 			delegate.close();
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": close done." );	
+		LOGGER.logTrace ( this + ": close done." );
 	}
 
 	public MessageListener getMessageListener() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getMessageListener()..." );
+		LOGGER.logDebug ( this + ": getMessageListener()..." );
 		MessageListener ret = null;
 		try {
 			ret = delegate.getMessageListener();
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getMessageListener() returning " + ret );
+		LOGGER.logTrace ( this + ": getMessageListener() returning " + ret );
 		return ret;
 	}
 
 	public String getMessageSelector() throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": getMessageSelector()..." );
+		LOGGER.logDebug ( this + ": getMessageSelector()..." );
 		String ret = null;
 		try {
 			ret = delegate.getMessageSelector();
 		} catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": getMessageSelector() returning " + ret );
+		LOGGER.logTrace ( this + ": getMessageSelector() returning " + ret );
 		return ret;
 	}
 
 	public void setMessageListener ( MessageListener listener ) throws JMSException {
-		if ( LOGGER.isDebugEnabled() ) LOGGER.logDebug ( this + ": setMessageListener ( " + listener + " )..." );
+		LOGGER.logDebug ( this + ": setMessageListener ( " + listener + " )..." );
 		try {
 			delegate.setMessageListener ( listener );
 		}catch (Exception e) {
 			handleException ( e );
 		}
-		if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this + ": setMessageListener done." );
+		LOGGER.logTrace ( this + ": setMessageListener done." );
 	}
 	
 	public String toString() 

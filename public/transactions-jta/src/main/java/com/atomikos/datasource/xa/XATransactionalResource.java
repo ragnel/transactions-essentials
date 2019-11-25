@@ -184,7 +184,7 @@ public abstract class XATransactionalResource implements TransactionalResource
             }
         } catch ( XAException xa ) {
             // timed out?
-            if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( this.servername
+            LOGGER.logTrace ( this.servername
                     + ": XAResource needs refresh?", xa );
 
         }
@@ -410,7 +410,7 @@ public abstract class XATransactionalResource implements TransactionalResource
     {
 
         if ( recoveryService != null ) {
-            if ( LOGGER.isTraceEnabled() ) LOGGER.logTrace ( "Installing recovery service on resource "
+            LOGGER.logTrace ( "Installing recovery service on resource "
                     + getName () );
             this.branchIdentifier=recoveryService.getName();
             recover();

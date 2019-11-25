@@ -57,6 +57,7 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	}
 
 	public void testLogInfo() {
+		configureLoggingFrameworkWithInfo();
 		logger.logInfo(MESSAGE);
 		assertLoggedAsInfo();
 	}
@@ -64,6 +65,7 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	protected abstract void assertLoggedAsInfo();
 
 	public void testLogInfoWithException() {
+		configureLoggingFrameworkWithInfo();
 		logger.logInfo(MESSAGE,ERROR);
 		assertLoggedAsInfoWithException();
 	}
@@ -71,6 +73,7 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	protected abstract void assertLoggedAsInfoWithException();
 
 	public void testLogWarning() {
+		configureLoggingFrameworkWithWarning();
 		logger.logWarning(MESSAGE);
 		assertLoggedAsWarning();
 	}
@@ -78,6 +81,7 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	protected abstract void assertLoggedAsWarning();
 
 	public void testLogWarningWithException() {
+		configureLoggingFrameworkWithWarning();
 		logger.logWarning(MESSAGE,ERROR);
 		assertLoggedAsWarningWithException();
 	}
@@ -85,6 +89,7 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	protected abstract void assertLoggedAsWarningWithException();
 	
   public void testLogError() {
+  	configureLoggingFrameworkWithError();
     logger.logError(MESSAGE);
     assertLoggedAsError();
   }
@@ -92,24 +97,28 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
   protected abstract void assertLoggedAsError();
   
   public void testLogErrorWithException() {
-    logger.logError(MESSAGE,ERROR);
-    assertLoggedAsErrorWithException();
+	  configureLoggingFrameworkWithError();
+	  logger.logError(MESSAGE,ERROR);
+	  assertLoggedAsErrorWithException();
   }
   
   protected abstract void assertLoggedAsErrorWithException();
 
   public void testIsTraceEnabled() {
+	  	configureLoggingFrameworkWithNone();
 		assertFalse(logger.isTraceEnabled());
 		configureLoggingFrameworkWithTrace();
 		assertTrue(logger.isTraceEnabled());
 	}
 	public void testIsDebugEnabled() {
+		configureLoggingFrameworkWithNone();
 		assertFalse(logger.isDebugEnabled());
 		configureLoggingFrameworkWithDebug();
 		assertTrue(logger.isDebugEnabled());
 	}
 
 	public void testIsInfoEnabled() {
+		configureLoggingFrameworkWithNone();
 		assertFalse(logger.isInfoEnabled());
 		configureLoggingFrameworkWithInfo();
 		assertTrue(logger.isInfoEnabled());
@@ -117,10 +126,17 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	
 	public void testIsErrorEnabled() {
 	  configureLoggingFrameworkWithNone();
-    assertFalse(logger.isErrorEnabled());
-    configureLoggingFrameworkWithError();
-    assertTrue(logger.isErrorEnabled());
-  }
+	  assertFalse(logger.isErrorEnabled());
+	  configureLoggingFrameworkWithError();
+	  assertTrue(logger.isErrorEnabled());
+	}
+	
+	public void testIsWarningEnabled() {
+		configureLoggingFrameworkWithNone();
+		assertFalse(logger.isWarningEnabled());
+		configureLoggingFrameworkWithWarning();
+		assertTrue(logger.isWarningEnabled());
+	}
 	
 	protected abstract void configureLoggingFrameworkWithNone();
 	
@@ -129,4 +145,6 @@ public abstract class AbstractLoggerFactoryTest extends TestCase {
 	protected abstract void configureLoggingFrameworkWithInfo();
 
 	protected abstract void configureLoggingFrameworkWithDebug();
+	
+	protected abstract void configureLoggingFrameworkWithWarning();
 }
